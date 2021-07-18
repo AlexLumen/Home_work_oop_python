@@ -2,7 +2,7 @@ from csv import DictReader
 import json
 
 # Сохраняем список книг
-with open('../files/books.csv', newline='') as books_file:
+with open('files/books.csv', newline='') as books_file:
     books = DictReader(books_file)
     books_list = []
     for book in books:
@@ -10,7 +10,7 @@ with open('../files/books.csv', newline='') as books_file:
             {'title': book['Title'], 'author': book['Author'], 'pages': book['Pages'], 'genre': book['Genre']})
 
 # Сохраняем список пользователей
-with open('../files/users.json', "r") as users_file:
+with open('files/users.json', "r") as users_file:
     users = json.loads(users_file.read())
     users_list = []
     for user in users:
