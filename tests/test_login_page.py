@@ -1,13 +1,10 @@
-from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from pages.base_page import assert_element
 
 
 def test_login_page(browser, url):
     """Test for login page"""
     browser.get(url)
-    wait = WebDriverWait(browser, 7)
     fa_account = browser.find_element(By.CSS_SELECTOR, ".fa-user")
     fa_account.click()
     login_menu_item = browser.find_element(By.CSS_SELECTOR, ".dropdown-menu-right>li:nth-child(2)")
@@ -16,19 +13,7 @@ def test_login_page(browser, url):
     title_login_form_text = title_login_form.text
     assert title_login_form_text == "Returning Customer", \
         "Invalid login title"
-    try:
-        assert wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "#input-email")))
-    except TimeoutException:
-        raise AssertionError("Did not wait for the email input element to be visible, it may be missing")
-    try:
-        assert wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "#input-password")))
-    except TimeoutException:
-        raise AssertionError("Did not wait for the password input element to be visible, it may be missing")
-    try:
-        assert wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "input.btn")))
-    except TimeoutException:
-        raise AssertionError("Did not wait for the login button element to be visible, it may be missing")
-    try:
-        assert wait.until((EC.visibility_of_element_located((By.CSS_SELECTOR, ".form-group>a"))))
-    except TimeoutException:
-        raise AssertionError("Did not wait for the forgot password element to be visible, it may be missing")
+    assert_element("#input-email", browser, 5)
+    assert_element("#input-password", browser, 5)
+    assert_element("input.btn", browser, 5)
+    assert_element(".form-group>a", browser, 5)
