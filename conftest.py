@@ -1,7 +1,9 @@
 import os
 import pytest
 from selenium import webdriver
-from selenium.webdriver.common.by import By
+from pages.AdminPage import AdminPage
+from pages.AdminProductsPage import AdminProductsPage
+from pages.elements.AdminNavigationMenu import AdminNavigationMenu
 from selenium.webdriver.opera.options import Options as OperaOptions
 
 DRIVERS = os.path.expanduser('C://browdriver')
@@ -61,16 +63,25 @@ def browser(request):
 
 
 @pytest.fixture(scope='function', autouse=False)
-def credentials(browser, url):
+def authorization_to_admin_page(browser, url):
     login = 'demo'
     password = 'demo'
     browser.get(url + '/admin')
-    if url == 'http://172.18.31.33:8081':
+    if url != 'https://demo.opencart.com':
         login = 'user'
         password = 'bitnami'
-    input_username = browser.find_element(By.CSS_SELECTOR, "#input-username")
-    input_username.send_keys(login)
-    input_username = browser.find_element(By.CSS_SELECTOR, "#input-password")
-    input_username.send_keys(password)
-    login_button = browser.find_element(By.CSS_SELECTOR, ".btn-primary")
-    login_button.click()
+    page = AdminPage(browser, url)
+    page.authorization_to_admin_page(login, password)
+
+
+@pytest.fixture(scope='function', autouse=False)
+def add_new_product_on_admin_page(browser, url):
+    page = AdminNavigationMenu(browser, url)
+    page.open_products_catalog()
+    page = AdminProductsPage(browser, url)
+    page.click_add_product_button()
+    page.input_product_name()
+    page.input_meta_tag_title()
+    page.click_tab_data()
+    page.input_model()
+    page.click_save_product_button()
