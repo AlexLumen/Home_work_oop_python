@@ -1,5 +1,6 @@
 import os
 import pytest
+import logging
 from selenium import webdriver
 from pages.AdminPage import AdminPage
 from pages.AdminProductsPage import AdminProductsPage
@@ -7,6 +8,9 @@ from pages.elements.AdminNavigationMenu import AdminNavigationMenu
 from selenium.webdriver.opera.options import Options as OperaOptions
 
 DRIVERS = os.path.expanduser('C://browdriver')
+
+logging.basicConfig(level=logging.INFO, filename="../selenium.log")
+logger = logging.getLogger(__name__)
 
 
 def pytest_addoption(parser):
@@ -29,6 +33,7 @@ def browser(request):
     maximized = request.config.getoption("--maximized")
 
     driver = None
+    logger.info(f"Run browser {browser_name}")
 
     if browser_name == "chrome":
         options = webdriver.ChromeOptions()
@@ -55,6 +60,7 @@ def browser(request):
         driver.maximize_window()
 
     def final():
+        logger.info(f"Browser {browser_name} close")
         driver.quit()
 
     request.addfinalizer(final)
@@ -77,7 +83,7 @@ def authorization_to_admin_page(browser, url):
 @pytest.fixture(scope='function', autouse=False)
 def add_new_product_on_admin_page(browser, url):
     admin_navigation_menu_page = AdminNavigationMenu(browser, url)
-    admin_navigation_menu_page .open_products_catalog()
+    admin_navigation_menu_page.open_products_catalog()
     admin_products_page = AdminProductsPage(browser, url)
     admin_products_page.click_add_product_button()
     admin_products_page.input_product_name()
