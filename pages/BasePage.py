@@ -12,7 +12,6 @@ class BasePage:
         self.url = url
 
     def open_browser(self):
-        """Открыть браузер"""
         self.browser.get(self.url)
 
     def verify_element_visibility(self, how, what, timeout=10):
@@ -41,9 +40,6 @@ class BasePage:
         element = self.browser.find_element(how, what)
         element.clear()
         element.send_keys(text)
-
-    def accept_alert(self):
-        alert = self.browser.switch_to.alert
 
     def alert_accept(self):
         confirm_alert = self.browser.switch_to.alert

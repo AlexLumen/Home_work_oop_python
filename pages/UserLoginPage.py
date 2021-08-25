@@ -2,7 +2,7 @@ from pages.BasePage import BasePage
 from pages.locators.UserLoginPageLocators import UserLoginFormLocators
 
 
-class LoginForm(BasePage):
+class UserLoginPage(BasePage):
     def verify_login_form_title(self):
         login_form_title_text = self.get_text(*UserLoginFormLocators.TITLE_LOGIN_FORM)
         assert login_form_title_text == "Returning Customer", \
