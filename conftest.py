@@ -19,6 +19,9 @@ def pytest_addoption(parser):
     parser.addoption('--url', action='store', default='https://demo.opencart.com')
     parser.addoption("--headless", action="store_true", help="Run headless")
     parser.addoption("--maximized", action="store_true", help="Maximize browser windows")
+    parser.addoption("--executor", action="store", default="localhost")
+    parser.addoption("--bversion", action="store", default="92.0")
+    parser.addoption("--vnc", action="store_true", default=True)
 
 
 @pytest.fixture(scope="session")
@@ -31,32 +34,56 @@ def browser(request):
     browser_name = request.config.getoption("--browser_name")
     headless = request.config.getoption("--headless")
     maximized = request.config.getoption("--maximized")
+    executor = request.config.getoption("--executor")
+    version = request.config.getoption("--bversion")
+    vnc = request.config.getoption("--vnc")
 
     driver = None
     logger.info(f"Run browser {browser_name}")
 
-    if browser_name == "chrome":
-        options = webdriver.ChromeOptions()
-        if headless:
-            options.headless = True
-        driver = webdriver.Chrome(executable_path=f"{DRIVERS}/chromedriver.exe", options=options)
-    elif browser_name == "firefox":
-        options = webdriver.FirefoxOptions()
-        if headless:
-            options.headless = True
-        driver = webdriver.Chrome(executable_path=f"{DRIVERS}/geckodriver.exe", options=options)
-    elif browser_name == "opera":
-        options = OperaOptions()
-        driver = webdriver.Opera(executable_path=f"{DRIVERS}/operadriver.exe", options=options)
-    elif browser_name == "yandex":
-        options = webdriver.ChromeOptions()
-        if headless:
-            options.headless = True
-        driver = webdriver.Opera(executable_path=f"{DRIVERS}/yandexdriver.exe", options=options)
-    else:
-        raise pytest.UsageError("--browser_name should be chrome, firefox, opera, yandex")
+    if executor == "localhost":
 
-    if maximized:
+        if browser_name == "chrome":
+            options = webdriver.ChromeOptions()
+            if headless:
+                options.headless = True
+            driver = webdriver.Chrome(executable_path=f"{DRIVERS}/chromedriver.exe", options=options)
+        elif browser_name == "firefox":
+            options = webdriver.FirefoxOptions()
+            if headless:
+                options.headless = True
+            driver = webdriver.Chrome(executable_path=f"{DRIVERS}/geckodriver.exe", options=options)
+        elif browser_name == "opera":
+            options = OperaOptions()
+            driver = webdriver.Opera(executable_path=f"{DRIVERS}/operadriver.exe", options=options)
+        elif browser_name == "yandex":
+            options = webdriver.ChromeOptions()
+            if headless:
+                options.headless = True
+            driver = webdriver.Opera(executable_path=f"{DRIVERS}/yandexdriver.exe", options=options)
+        else:
+            raise pytest.UsageError("--browser_name should be chrome, firefox, opera, yandex")
+
+        if maximized:
+            driver.maximize_window()
+    else:
+        executor_url = f"http://{executor}:4444/wd/hub"
+
+        capabilities = {
+            "browserName": browser_name,
+            "browserVersion": version,
+            "name": "test_opencart",
+            "selenoid:options": {
+                "sessionTimeout": "60s",
+                "enableVNC": vnc
+            }
+        }
+
+        driver = webdriver.Remote(
+            command_executor=executor_url,
+            desired_capabilities=capabilities
+        )
+
         driver.maximize_window()
 
     def final():
@@ -64,7 +91,6 @@ def browser(request):
         driver.quit()
 
     request.addfinalizer(final)
-
     return driver
 
 
