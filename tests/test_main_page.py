@@ -1,6 +1,8 @@
+import allure
 from pages.MainPage import MainPage
 
 
+@allure.title("Проверка главной страницы")
 def test_main_page(browser, url):
     """Test for main page"""
     main_page = MainPage(browser, url)

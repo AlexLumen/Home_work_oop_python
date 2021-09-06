@@ -1,5 +1,6 @@
 import os
 import pytest
+import allure
 import logging
 from selenium import webdriver
 from pages.AdminPage import AdminPage
@@ -94,6 +95,7 @@ def browser(request):
     return driver
 
 
+@allure.title("Просмотр страницы администратора")
 @pytest.fixture(scope='function', autouse=False)
 def authorization_to_admin_page(browser, url):
     login = 'demo'
@@ -102,18 +104,21 @@ def authorization_to_admin_page(browser, url):
     if url != 'https://demo.opencart.com':
         login = 'user'
         password = 'bitnami'
-    admin_page = AdminPage(browser, url)
-    admin_page.authorization_to_admin_page(login, password)
+    with allure.step("Авторизация в админке"):
+        admin_page = AdminPage(browser, url)
+        admin_page.authorization_to_admin_page(login, password)
 
 
 @pytest.fixture(scope='function', autouse=False)
 def add_new_product_on_admin_page(browser, url):
-    admin_navigation_menu_page = AdminNavigationMenu(browser, url)
-    admin_navigation_menu_page.open_products_catalog()
-    admin_products_page = AdminProductsPage(browser, url)
-    admin_products_page.click_add_product_button()
-    admin_products_page.input_product_name()
-    admin_products_page.input_meta_tag_title()
-    admin_products_page.click_tab_data()
-    admin_products_page.input_model()
-    admin_products_page.click_save_product_button()
+    with allure.step("Открыть каталог продуктов в меню навигации админки"):
+        admin_navigation_menu_page = AdminNavigationMenu(browser, url)
+        admin_navigation_menu_page.open_products_catalog()
+    with allure.step("Добавить новый продукт"):
+        admin_products_page = AdminProductsPage(browser, url)
+        admin_products_page.click_add_product_button()
+        admin_products_page.input_product_name()
+        admin_products_page.input_meta_tag_title()
+        admin_products_page.click_tab_data()
+        admin_products_page.input_model()
+        admin_products_page.click_save_product_button()

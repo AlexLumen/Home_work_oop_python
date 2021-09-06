@@ -50,6 +50,8 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
+.allure-report/
+.allure-results/
 
 # Translations
 *.mo
@@ -129,3 +131,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+/tests/allure-results/
+/tests/allure-report/
+.allure-report

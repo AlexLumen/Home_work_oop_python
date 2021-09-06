@@ -1,8 +1,10 @@
+import allure
 from pages.ProductPage import ProductPage
 from pages.elements.MainMenu import MainMenu
 from pages.elements.ProductItems import ProductItems
 
 
+@allure.title("Проверка страницы продукта")
 def test_product_page(browser, url):
     """Test for product page"""
     main_menu_page = MainMenu(browser, url)
