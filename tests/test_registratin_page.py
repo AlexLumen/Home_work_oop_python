@@ -1,8 +1,9 @@
+import allure
 from pages.RegistrationPage import RegistrationPage
 from pages.elements.TopNavbar import TopNavbar
-import time
 
 
+@allure.title("Тест регистрации пользователя")
 def test_registration_user(browser, url):
     top_navbar_page = TopNavbar(browser, url)
     top_navbar_page.open_browser()
