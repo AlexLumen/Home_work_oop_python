@@ -34,6 +34,7 @@ class BasePage:
         """Кликнуть по элементу"""
         try:
             self.logger.info(f"Wait {what} to be visibility")
+            self.verify_element_visibility(how, what)
             element = self.browser.find_element(how, what)
             element.click()
         except NoSuchElementException:
@@ -48,6 +49,7 @@ class BasePage:
     def click_element_action(self, how, what):
         try:
             self.logger.info("Clicking element: {}".format(what))
+            self.verify_element_visibility(how, what)
             element = self.browser.find_element(how, what)
             ActionChains(self.browser).pause(0.3).move_to_element(element).click(element).perform()
         except NoSuchElementException:
@@ -77,6 +79,7 @@ class BasePage:
     def send_text(self, how, what, text):
         """Напечатать текст"""
         try:
+            self.verify_element_visibility(how, what)
             element = self.browser.find_element(how, what)
             self.logger.info("Clearing text: {}".format(what))
             element.clear()
@@ -93,6 +96,5 @@ class BasePage:
 
     def alert_accept(self):
         confirm_alert = self.browser.switch_to.alert
-        print(confirm_alert.text)
         self.logger.info("Accept alert")
         confirm_alert.accept()

@@ -6,9 +6,7 @@ from .locators.MainPageLocators import MainPageLocators
 class MainPage(BasePage):
     @step("Проверка текста логотипа")
     def verify_logo_store(self):
-        logo_text = self.get_text(*MainPageLocators.LOGO_YOUR_STORE)
-        assert logo_text == 'Your Store', \
-            'Logo text invalid'
+        self.verify_element_visibility(*MainPageLocators.LOGO_YOUR_STORE)
 
     @step("Проверка верхнего меню")
     def should_be_top_navbar(self):
