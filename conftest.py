@@ -1,4 +1,3 @@
-import os
 import pytest
 import allure
 import logging
@@ -8,7 +7,6 @@ from pages.AdminProductsPage import AdminProductsPage
 from pages.elements.AdminNavigationMenu import AdminNavigationMenu
 from selenium.webdriver.opera.options import Options as OperaOptions
 
-DRIVERS = os.path.expanduser('C://browdriver')
 
 logging.basicConfig(level=logging.INFO, filename="../selenium.log")
 logger = logging.getLogger(__name__)
@@ -20,7 +18,7 @@ def pytest_addoption(parser):
     parser.addoption('--url', action='store', default='https://demo.opencart.com')
     parser.addoption("--headless", action="store_true", help="Run headless")
     parser.addoption("--maximized", action="store_true", help="Maximize browser windows")
-    parser.addoption("--executor", action="store", default="localhost")
+    parser.addoption("--executor", action="store", default="192.168.0.103")
     parser.addoption("--bversion", action="store", default="92.0")
     parser.addoption("--vnc", action="store_true", default=True)
 
@@ -38,30 +36,31 @@ def browser(request):
     executor = request.config.getoption("--executor")
     version = request.config.getoption("--bversion")
     vnc = request.config.getoption("--vnc")
-
+    fp = webdriver.FirefoxProfile()
     driver = None
     logger.info(f"Run browser {browser_name}")
 
     if executor == "localhost":
+        capabilities = {'goog:chromeOptions': {}}
 
         if browser_name == "chrome":
             options = webdriver.ChromeOptions()
             if headless:
                 options.headless = True
-            driver = webdriver.Chrome(executable_path=f"{DRIVERS}/chromedriver.exe", options=options)
+            driver = webdriver.Chrome(options=options, desired_capabilities=capabilities)
         elif browser_name == "firefox":
             options = webdriver.FirefoxOptions()
             if headless:
                 options.headless = True
-            driver = webdriver.Chrome(executable_path=f"{DRIVERS}/geckodriver.exe", options=options)
+            driver = webdriver.Firefox(options=options, firefox_profile=fp)
         elif browser_name == "opera":
             options = OperaOptions()
-            driver = webdriver.Opera(executable_path=f"{DRIVERS}/operadriver.exe", options=options)
+            driver = webdriver.Opera(options=options, desired_capabilities=capabilities)
         elif browser_name == "yandex":
             options = webdriver.ChromeOptions()
             if headless:
                 options.headless = True
-            driver = webdriver.Opera(executable_path=f"{DRIVERS}/yandexdriver.exe", options=options)
+            driver = webdriver.Opera(options=options, desired_capabilities=capabilities)
         else:
             raise pytest.UsageError("--browser_name should be chrome, firefox, opera, yandex")
 
