@@ -4,8 +4,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'chmod +x install.sh'
-                sh './install.sh'
+                sh 'Dockerfile'
+                sh './Dockerfile'
             }
         }
         stage('Test') {
