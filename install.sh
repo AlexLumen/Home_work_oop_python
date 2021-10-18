@@ -3,7 +3,7 @@
 FILE=venv/
 
 if [ ! -d "$FILE" ]; then
-    python3 -m venv venv
+    python -m venv venv
 fi
 
 source venv/bin/activate &&
