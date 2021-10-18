@@ -4,15 +4,13 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                    PATH=$PATH:$WORKSPACE
-				    python -m venv venv
-				    . venv/bin/activate
-				    pip install -r requirements.txt
+                sh 'chmod +x install.sh'
+                sh './install.sh'
             }
         }
         stage('Test') {
             steps {
-                sh './env/bin/pytest --url ${URL} --executor ${EXECUTOR} --browser ${BROWSER} --alluredir allure-results'
+                sh './env/bin/pytest --url ${APP_URL} --executor ${EXECUTOR} --browser ${BROWSER} --alluredir allure-results'
             }
         }
     }
