@@ -4,8 +4,10 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'chmod +x install.sh'
-                sh './install.sh'
+                    PATH=$PATH:$WORKSPACE
+				    python -m venv venv
+				    . venv/bin/activate
+				    pip install -r requirements.txt
             }
         }
         stage('Test') {
