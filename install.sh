@@ -3,8 +3,6 @@
 FILE=venv/
 
 if [ ! -d "$FILE" ]; then
-    sudo apt-get update
-    sudo apt-get install python3.9
     python -m venv venv
 fi
 
