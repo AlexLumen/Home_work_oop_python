@@ -1,7 +1,12 @@
 pipeline {
-    agent any
+    agent { docker { image 'python:latest' } }
 
     stages {
+        stage('Prepair') {
+            steps {
+                sh "python --version"
+            }
+        }
         stage('Build') {
             steps {
                 sh 'chmod +x install.sh'
