@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Prepair') {
             steps {
-                sh "python --version"
+                sh 'python --version'
             }
         }
         stage('Build') {
