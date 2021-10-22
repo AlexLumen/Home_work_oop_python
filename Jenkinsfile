@@ -4,10 +4,16 @@ pipeline {
     stages {
 
 
+
         stage('Build') {
             steps {
-                sh 'chmod +x install.sh'
-                sh './install.sh'
+                sh """
+				    PATH=$PATH:$WORKSPACE
+				    python3 -m venv venv
+				    . venv/bin/activate
+				    pip3 install -r tests/requirements.txt
+				    pytest -v tests --junitxml=report.xml
+                """
             }
         }
     }
