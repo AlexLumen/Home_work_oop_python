@@ -8,10 +8,10 @@ pipeline {
         stage('Build') {
             steps {
                 sh """
-				    PATH=$PATH:$WORKSPACE
-				    python3 -m venv venv
+				    PATH=${PATH}:/usr/local/bin
+				    python -m venv venv
 				    . venv/bin/activate
-				    pip3 install -r tests/requirements.txt
+				    pip install -r tests/requirements.txt
 				    pytest -v tests --junitxml=report.xml
                 """
             }
