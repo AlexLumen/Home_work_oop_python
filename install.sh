@@ -3,6 +3,7 @@
 FILE=venv/
 
 if [ ! -d "$FILE" ]; then
+    PATH=${PATH}:/usr/local/bin
     python -m venv venv
 fi
 
