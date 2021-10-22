@@ -8,6 +8,7 @@ pipeline {
           image 'python:latest'
         }
       }
+      }
         stage('Prepair') {
             steps {
                 sh 'python --version'
