@@ -2,19 +2,15 @@ pipeline {
     agent any
 
     stages {
-
-
-
         stage('Build') {
             steps {
-                sh """
-				    PATH=$PATH:$PWD/build
-				    echo $PATH
-				    python3 -m venv venv
-				    . venv/bin/activate
-				    pip3 install -r requirements.txt
-				    ./env/bin/pytest -v tests --junitxml=report.xml
-                """
+                sh 'chmod +x install.sh'
+                sh './install.sh'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh './env/bin/pytest --url ${APP_URL} --executor ${EXECUTOR} --browser ${BROWSER} --alluredir allure-results'
             }
         }
     }
