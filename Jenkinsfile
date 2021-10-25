@@ -10,8 +10,8 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'sudo chmod 777 ./venv/lib/python3.9/site-packages/pytest'
-                sh './venv/lib/python3.9/site-packages/pytest --url ${APP_URL} --executor ${EXECUTOR} --browser ${BROWSER} --alluredir allure-results'
+                sh 'chmod 777 ./venv/lib/python3.9/site-packages/pytest'
+                sh 'sudo ./venv/lib/python3.9/site-packages/pytest --url ${APP_URL} --executor ${EXECUTOR} --browser ${BROWSER} --alluredir allure-results'
             }
         }
     }
