@@ -10,8 +10,6 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'PATH=$PATH:$WORKSPACE'
-                sh 'pip install pytest'
                 sh '/var/jenkins_home/.local/bin/pytest --url ${APP_URL} --executor ${EXECUTOR} --browser ${BROWSER} --alluredir allure-results'
             }
         }
