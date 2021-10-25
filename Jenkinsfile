@@ -8,7 +8,8 @@ pipeline {
         stage('Build') {
             steps {
                 sh """
-				    PATH=${PATH}:/usr/local/bin
+				    PATH=$PATH:$PWD/build
+				    echo $PATH
 				    python3 -m venv venv
 				    . venv/bin/activate
 				    pip install -r tests/requirements.txt
