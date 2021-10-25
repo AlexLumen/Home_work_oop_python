@@ -10,8 +10,13 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'chmod 777 ./venv/lib/python3.9/site-packages/pytest'
-                sh './venv/lib/python3.9/site-packages/pytest -v test --url ${APP_URL} --executor ${EXECUTOR} --browser ${BROWSER} --alluredir allure-results'
+                sh """
+				    PATH=$PATH:$WORKSPACE
+				    python3 -m venv venv
+				    . venv/bin/activate
+				    pip3 install -r tests/requirements.txt
+				    pytest -v tests --url ${APP_URL} --executor ${EXECUTOR} --browser ${BROWSER} --alluredir allure-results --junitxml=report.xml
+                """
             }
         }
     }
