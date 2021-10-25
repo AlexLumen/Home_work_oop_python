@@ -9,7 +9,7 @@ pipeline {
             steps {
                 sh """
 				    PATH=${PATH}:/usr/local/bin
-				    python -m venv venv
+				    python3 -m venv venv
 				    . venv/bin/activate
 				    pip install -r tests/requirements.txt
 				    pytest -v tests --junitxml=report.xml
