@@ -11,8 +11,9 @@ pipeline {
 				    PATH=$PATH:$PWD/build
 				    echo $PATH
 				    python3 -m venv venv
+				    . venv/bin/activate
 				    pip3 install -r requirements.txt
-				    pytest -v tests --junitxml=report.xml
+				    ./env/bin/pytest -v tests --junitxml=report.xml
                 """
             }
         }
