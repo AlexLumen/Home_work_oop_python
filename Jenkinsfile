@@ -4,13 +4,13 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'python3 -m venv venv'
-		sh 'pip3 install -r requirements.txt'
+                sh 'chmod +x install.sh'
+                sh './install.sh'
             }
         }
         stage('Test') {
             steps {
-		    sh '/var/jenkins_home/.local/lib/python3.9/site-packages pytest -v tests --url ${APP_URL} --executor ${EXECUTOR} --browser ${BROWSER} --alluredir allure-results'
+                sh './env/bin/pytest --url ${APP_URL} --executor ${EXECUTOR} --browser ${BROWSER} --alluredir allure-results'
             }
         }
     }
