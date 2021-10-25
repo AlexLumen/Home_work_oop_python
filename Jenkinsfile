@@ -10,8 +10,6 @@ pipeline {
                 sh """
 				    PATH=$PATH:$PWD/build
 				    echo $PATH
-				    sudo install python3-venv
-				    python3 -m venv venv
 				    . venv/bin/activate
 				    pip install -r tests/requirements.txt
 				    pytest -v tests --junitxml=report.xml
