@@ -10,7 +10,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-		    sh 'pytest -v tests --url ${APP_URL} --executor ${EXECUTOR} --browser ${BROWSER} --alluredir allure-results'
+		    sh '.local/lib/python3.9/site-packages pytest -v tests --url ${APP_URL} --executor ${EXECUTOR} --browser ${BROWSER} --alluredir allure-results'
             }
         }
     }
