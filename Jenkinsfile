@@ -10,6 +10,7 @@ pipeline {
                 sh """
 				    PATH=$PATH:$PWD/build
 				    echo $PATH
+				    apt-get install python3-venv
 				    python3 -m venv venv
 				    . venv/bin/activate
 				    pip install -r tests/requirements.txt
