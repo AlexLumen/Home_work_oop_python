@@ -4,10 +4,9 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'PATH=$PATH:$WORKSPACE'
                 sh 'python3 -m venv venv'
 		sh '. venv/bin/activate'
-		sh 'pip3 install --no-cache-dir -r requirements.txt'
+		sh 'pip3 install -r requirements.txt'
             }
         }
         stage('Test') {
