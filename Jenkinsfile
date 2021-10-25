@@ -10,7 +10,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh '/var/jenkins_home/.local/bin/pytest --url ${APP_URL} --executor ${EXECUTOR} --browser ${BROWSER} --alluredir allure-results'
+                sh './env/bin/pytest --url ${APP_URL} --executor ${EXECUTOR} --browser ${BROWSER} --alluredir allure-results'
             }
         }
     }
