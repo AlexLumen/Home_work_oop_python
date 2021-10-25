@@ -11,7 +11,7 @@ pipeline {
         stage('Test') {
             steps {
                 sh 'chmod 777 ./venv/lib/python3.9/site-packages/pytest'
-                sh 'sudo ./venv/lib/python3.9/site-packages/pytest --url ${APP_URL} --executor ${EXECUTOR} --browser ${BROWSER} --alluredir allure-results'
+                sh './venv/lib/python3.9/site-packages/pytest -v test --url ${APP_URL} --executor ${EXECUTOR} --browser ${BROWSER} --alluredir allure-results'
             }
         }
     }
