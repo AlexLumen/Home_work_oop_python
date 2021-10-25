@@ -6,7 +6,6 @@ pipeline {
             steps {
                 sh 'chmod +x install.sh'
                 sh './install.sh'
-                sh 'pip install pytest-xdist'
             }
         }
         stage('Test') {
