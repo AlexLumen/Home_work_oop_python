@@ -10,7 +10,7 @@ pipeline {
                 sh """
 				    PATH=$PATH:$PWD/build
 				    echo $PATH
-				    pip install -r tests/requirements.txt
+				    pip3 install -r tests/requirements.txt
 				    pytest -v tests --junitxml=report.xml
                 """
             }
