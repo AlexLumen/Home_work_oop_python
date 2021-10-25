@@ -4,19 +4,15 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'chmod +x install.sh'
-                sh './install.sh'
+                sh 'PATH=$PATH:$WORKSPACE'
+                sh 'python3 -m venv venv'
+		sh '. venv/bin/activate'
+		sh 'pip3 install -r requirements.txt'
             }
         }
         stage('Test') {
             steps {
-                sh """
-				    PATH=$PATH:$WORKSPACE
-				    python3 -m venv venv
-				    . venv/bin/activate
-				    pip3 install -r tests/requirements.txt
-				    pytest -v tests --url ${APP_URL} --executor ${EXECUTOR} --browser ${BROWSER} --alluredir allure-results --junitxml=report.xml
-                """
+		    sh 'pytest -v tests --url ${APP_URL} --executor ${EXECUTOR} --browser ${BROWSER} --alluredir allure-results'
             }
         }
     }
